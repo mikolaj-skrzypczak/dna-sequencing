@@ -5,6 +5,12 @@ description = ""
 authors = [
     "mateusz-świercz < mateusz.swiercz@student.put.poznan.pl >",
     "mikolaj-skrzypczak < mikolaj.m.skrzypczak@student.put.poznan.pl >"]
+packages = [
+    { include = "dna_sequencing" },
+]
+
+[tool.poetry.scripts]
+dna_sequencing = "dna_sequencing.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
