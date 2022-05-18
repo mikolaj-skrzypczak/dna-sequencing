@@ -1,29 +1,25 @@
 import os
 
 from dna_sequencing.graph.graph import Graph
-from typing import List
+from dna_sequencing.greedy.greedy import GreedySolver
+from dna_sequencing.utils.file_handing import read_file
+
+FILEPATH = "test_instances/neg_random/9.200-40.txt"
 
 
-def read_lines(filepath: str) -> List[str]:
-    try:
-        with open(f"{os.getcwd()}/{filepath}", "r") as f:
-            return f.read().splitlines()
-    except FileNotFoundError:
-        print("Given file does not exist")
-        return []
+def main():
+    os.chdir("..") if str(os.getcwd()).split("\\")[-1] != "dna-sequencing" else None
 
-
-def main(append=True):
-    filepath = "test_instances/neg_random/9.200-40.txt"
-
-    if append:
-        filepath = "dna_sequencing/" + filepath
-
-    test_instance = read_lines(filepath)
+    test_instance = read_file(FILEPATH)
 
     if test_instance:
         graph = Graph(test_instance)
+        greedy_solution = GreedySolver(graph).solve()
+        print(greedy_solution)
+
+    else:
+        print("Test instance not found!")
 
 
 if __name__ == '__main__':
-    main(append=False)
+    main()
