@@ -22,8 +22,8 @@ def main():
         sa_solution = SimulatedAnnealingSolver(
             graph=graph,
             solution=greedy_solution,
-            iterations=1500,
-            initial_temperature=5,
+            iterations=1000,
+            initial_temperature=50,
             n=209
         ).solve()
         print("SA:")

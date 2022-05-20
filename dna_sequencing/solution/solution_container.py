@@ -62,4 +62,4 @@ class SolutionContainer:
         self.__overlaps.pop()
 
     def __str__(self) -> str:
-        return f"""Solution:\nUsed oligonucleotides: {len(self.__vertices_ids)}\nGenerated sequence:{self.__sequence}"""
+        return f"""Solution:\nUsed oligonucleotides: {len(self.__vertices_ids)}\nGenerated sequence:\n{self.__sequence}"""

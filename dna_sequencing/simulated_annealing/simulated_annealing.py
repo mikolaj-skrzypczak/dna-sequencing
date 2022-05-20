@@ -1,6 +1,6 @@
 import copy
 import random
-from math import exp
+from math import exp, log
 
 import numpy as np
 
@@ -42,7 +42,8 @@ class SimulatedAnnealingSolver:
         return exp(-diff / t)
 
     def __update_temperature(self, iteration: int):
-        return self.__initial_temperature * pow(0.85, iteration)
+        # return self.__initial_temperature * pow(0.80, iteration)
+        return self.__initial_temperature / (1 + 5 * log(1 + iteration))
 
     def __get_new_solution(self) -> SolutionContainer:
         first_ind, second_ind = self.__choose_pair_to_swap()
