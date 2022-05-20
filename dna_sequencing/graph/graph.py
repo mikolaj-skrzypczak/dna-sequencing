@@ -25,7 +25,7 @@ class Graph:
     def __create_vertices_list(_test_instance: list[str]) -> list[Vertex]:
         return [Vertex(i, oligonucleotide) for i, oligonucleotide in enumerate(_test_instance, start=1)]
 
-    def __compute_edge_value(self, vertex1: Vertex, vertex2: Vertex) -> int:
+    def compute_overlap(self, vertex1: Vertex, vertex2: Vertex) -> int:
         i = 0
         while i < self.__oligonucleotide_length:
             if vertex2.oligonucleotide.startswith(vertex1.oligonucleotide[i:]):
@@ -35,7 +35,7 @@ class Graph:
 
     def __create_lysov_graph_matrix(self, oligonucleotides_list: list[Vertex]) -> np.array:
         return np.array(
-            [[self.__compute_edge_value(oligonucleotides_list[row], oligonucleotides_list[col]) if row != col else 0
+            [[self.compute_overlap(oligonucleotides_list[row], oligonucleotides_list[col]) if row != col else 0
               for col in range(self.__vertices_no)
               ] for row in range(self.__vertices_no)])
 

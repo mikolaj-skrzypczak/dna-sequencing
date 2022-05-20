@@ -15,7 +15,7 @@ class SolutionContainer:
         self.__overlaps = []
         self.__sequence = ""
 
-    def get_minimized_function_value(self) -> np.ndarray:  # actually np.intc
+    def evaluate_solution(self) -> np.ndarray:  # actually np.intc
         actual_overlaps = np.asarray(self.__overlaps, dtype=np.intc)
         ideal_overlaps = np.full(
             shape=actual_overlaps.shape,
@@ -30,6 +30,13 @@ class SolutionContainer:
     def init_sequence(self, oligonucleotide: str):
         self.__sequence = oligonucleotide
 
+    def swap_in_ids_list(self, first_ind: int, second_ind: int) -> None:
+        (self.__vertices_ids[first_ind], self.__vertices_ids[second_ind]) =\
+            (self.__vertices_ids[second_ind], self.__vertices_ids[first_ind])
+
+    def set_overlap(self, ind: int, overlap: int) -> None:
+        self.__overlaps[ind] = overlap
+
     def add_vertex_to_solution(
             self, _id: int, overlap: int, oligonucleotide: str
     ):
@@ -37,8 +44,14 @@ class SolutionContainer:
         self.__overlaps.append(overlap)
         self.__sequence += oligonucleotide[overlap:]
 
+    def get_vertex_id_by_index(self, ind: int) -> int:
+        return self.__vertices_ids[ind]
+
     def get_overlaps(self) -> list[int]:
         return copy.deepcopy(self.__overlaps)
+
+    def get_vertices_count(self) -> int:
+        return len(self.__vertices_ids)
 
     def get_oligonucleotide_length(self) -> int:
         return copy.deepcopy(self.__oligonucleotide_length)
