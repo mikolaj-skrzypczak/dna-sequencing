@@ -15,12 +15,6 @@ class Graph:
         self.__oligonucleotide_length = len(self.__vertices_list[0].oligonucleotide)
         self.__lysov_graph_matrix = self.__create_lysov_graph_matrix(self.__vertices_list)
 
-    def get_overlap_between_vertices(self, i: int, j: int) -> int:
-        return self.__lysov_graph_matrix[i][j]
-
-    def get_overlaps_of_adjacent_vertices(self, i: int) -> np.array:
-        return self.__lysov_graph_matrix[i, :]
-
     @staticmethod
     def __create_vertices_list(_test_instance: list[str]) -> list[Vertex]:
         return [Vertex(i, oligonucleotide) for i, oligonucleotide in enumerate(_test_instance, start=1)]
@@ -38,6 +32,12 @@ class Graph:
             [[self.compute_overlap(oligonucleotides_list[row], oligonucleotides_list[col]) if row != col else 0
               for col in range(self.__vertices_no)
               ] for row in range(self.__vertices_no)])
+
+    def get_overlap_between_vertices(self, i: int, j: int) -> int:
+        return self.__lysov_graph_matrix[i][j]
+
+    def get_overlaps_of_adjacent_vertices(self, i: int) -> np.array:
+        return self.__lysov_graph_matrix[i, :]
 
     def get_oligonucleotide_length(self) -> int:
         return self.__oligonucleotide_length

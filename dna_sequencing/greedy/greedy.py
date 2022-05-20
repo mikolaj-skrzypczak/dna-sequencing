@@ -14,6 +14,10 @@ class GreedySolver:
         self.__graph = graph
         self.__visited = set()
 
+    def solve(self) -> SolutionContainer:
+        start = np.random.randint(self.__graph.get_vertices_no())
+        return copy.deepcopy(self.__solve_greedy(start))
+
     def __get_sorted_candidates(self, i: int) -> np.array:
         # reverse since best vertices are the ones with highest overlap
         return self.__graph.get_overlaps_of_adjacent_vertices(i).argsort()[::-1]
@@ -53,7 +57,3 @@ class GreedySolver:
             are_there_candidates_left = self.__are_all_candidates_visited(candidates)
 
         return solution
-
-    def solve(self) -> SolutionContainer:
-        start = np.random.randint(self.__graph.get_vertices_no())
-        return copy.deepcopy(self.__solve_greedy(start))
