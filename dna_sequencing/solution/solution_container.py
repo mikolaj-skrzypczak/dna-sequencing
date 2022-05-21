@@ -56,10 +56,20 @@ class SolutionContainer:
     def get_oligonucleotide_length(self) -> int:
         return copy.deepcopy(self.__oligonucleotide_length)
 
+    def get_sequence_length(self) -> int:
+        return len(self.__sequence)
+
     def delete_last(self) -> None:
         self.__sequence = self.__sequence[:-(self.__oligonucleotide_length - self.__overlaps[-1])]
         self.__vertices_ids.pop()
         self.__overlaps.pop()
 
     def __str__(self) -> str:
-        return f"""Solution:\nUsed oligonucleotides: {len(self.__vertices_ids)}\nGenerated sequence:\n{self.__sequence}"""
+        return f"Used oligonucleotides: {len(self.__vertices_ids)}\nGenerated sequence:\n{self.__sequence}"
+
+    def to_csv_str(self, record_name: str, n_optimal_used_oligonucleotides: int) -> str:
+        n_used_oligonucleotides = len(self.__vertices_ids)
+        accuracy = n_used_oligonucleotides / n_optimal_used_oligonucleotides
+        sequence_length = len(self.__sequence)
+        mean_overlap = np.mean(self.__overlaps)
+        return f"{record_name},{n_used_oligonucleotides},{accuracy},{sequence_length},{mean_overlap},{self.__sequence}"

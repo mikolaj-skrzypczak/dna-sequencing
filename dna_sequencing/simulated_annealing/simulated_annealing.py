@@ -5,6 +5,7 @@ from math import exp, log
 import numpy as np
 
 from dna_sequencing.graph.graph import Graph
+from dna_sequencing.simulated_annealing.optimalization import shrink_solution_to_fit_optimal_sequence_length
 from dna_sequencing.solution.solution_container import SolutionContainer
 
 
@@ -13,15 +14,15 @@ class SimulatedAnnealingSolver:
     __solution: SolutionContainer
     __iterations: int
     __initial_temperature: int
-    __n: int
+    __optimal_sequence_length: int
 
     def __init__(self, graph: Graph, solution: SolutionContainer,
-                 iterations: int, initial_temperature: int, n: int) -> None:
+                 iterations: int, initial_temperature: int, optimal_sequence_length: int) -> None:
         self.__graph = graph
         self.__solution = solution
         self.__iterations = iterations
         self.__initial_temperature = initial_temperature
-        self.__n = n
+        self.__optimal_sequence_length = optimal_sequence_length
 
     def solve(self):
         for iteration in range(self.__iterations):
@@ -29,10 +30,12 @@ class SimulatedAnnealingSolver:
             neighbor_solution = self.__get_new_solution()
             current_evaluation = self.__solution.evaluate_solution()
             neighbor_evaluation = neighbor_solution.evaluate_solution()
+
             if self.__acceptance_probability(current_evaluation, neighbor_evaluation, _T) >= random.random():
                 self.__solution = neighbor_solution
-        # todo handle positive mistakes
-        return self.__solution
+
+        return shrink_solution_to_fit_optimal_sequence_length(
+            self.__graph, self.__solution, self.__optimal_sequence_length)
 
     @staticmethod
     def __acceptance_probability(current: np.ndarray, neighbor: np.ndarray, t: float) -> float:
@@ -68,15 +71,14 @@ class SimulatedAnnealingSolver:
 
     def __recalculate_and_set_new_overlap(
             self, solution: SolutionContainer, left_id: int, right_id: int, set_on_ind: int) -> None:
-        left_vertex = self.__graph.get_vertex_by_id(left_id)
-        right_vertex = self.__graph.get_vertex_by_id(right_id)
+        left_vertex = self.__graph.get_vertex_by_ind(left_id)
+        right_vertex = self.__graph.get_vertex_by_ind(right_id)
         new_overlap = self.__graph.compute_overlap(left_vertex, right_vertex)
         solution.set_overlap(ind=set_on_ind - 1, overlap=new_overlap)
 
     def __choose_pair_to_swap(self) -> tuple[int, int]:
         overlaps = self.__solution.get_overlaps()
         overlaps_keys_set = set(overlaps) - {self.__solution.get_oligonucleotide_length() - 1}
-        # divide count by overlap length to prioritize swapping weekly aligned oligonucleotides:
         overlaps_frequencies_modified = \
             {overlap: overlaps.count(overlap) / (overlap + 1) for overlap in overlaps_keys_set}
 

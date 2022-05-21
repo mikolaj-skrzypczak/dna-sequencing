@@ -15,8 +15,8 @@ class GreedySolver:
         self.__visited = set()
 
     def solve(self) -> SolutionContainer:
-        start = np.random.randint(self.__graph.get_vertices_no())
-        return copy.deepcopy(self.__solve_greedy(start))
+        starting_index = np.random.randint(self.__graph.get_vertices_no())
+        return copy.deepcopy(self.__solve_greedy(starting_index))
 
     def __get_sorted_candidates(self, i: int) -> np.array:
         # reverse since best vertices are the ones with highest overlap
@@ -30,16 +30,16 @@ class GreedySolver:
             if candidates[i] not in self.__visited:
                 return candidates[i]
 
-    def __solve_greedy(self, _id: int) -> SolutionContainer:
+    def __solve_greedy(self, starting_index: int) -> SolutionContainer:
         solution = SolutionContainer(self.__graph.get_oligonucleotide_length())
-        solution.init_ids(_id)
-        solution.init_sequence(self.__graph.get_vertex_by_id(_id).oligonucleotide)
+        solution.init_ids(starting_index)
+        solution.init_sequence(self.__graph.get_vertex_by_ind(starting_index).oligonucleotide)
 
-        self.__visited.add(_id)
-        candidates = self.__get_sorted_candidates(_id)
+        self.__visited.add(starting_index)
+        candidates = self.__get_sorted_candidates(starting_index)
         are_there_candidates_left = self.__are_all_candidates_visited(candidates)
 
-        current = _id
+        current = starting_index
         while are_there_candidates_left:
             _next = self.__get_best_candidate(candidates)
             self.__visited.add(_next)
@@ -49,7 +49,7 @@ class GreedySolver:
             solution.add_vertex_to_solution(
                 _id=_next,
                 overlap=overlap,
-                oligonucleotide=self.__graph.get_vertex_by_id(_next).oligonucleotide
+                oligonucleotide=self.__graph.get_vertex_by_ind(_next).oligonucleotide
             )
 
             current = _next

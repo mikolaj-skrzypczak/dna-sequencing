@@ -5,7 +5,7 @@ from dna_sequencing.greedy.greedy import GreedySolver
 from dna_sequencing.simulated_annealing.simulated_annealing import SimulatedAnnealingSolver
 from dna_sequencing.utils.file_handing import read_file
 
-FILEPATH = "test_instances/neg_random/9.200-40.txt"
+FILEPATH = "test_instances/pos_random/9.200+80.txt"
 
 
 def main():
@@ -24,7 +24,7 @@ def main():
             solution=greedy_solution,
             iterations=1000,
             initial_temperature=50,
-            n=209
+            optimal_sequence_length=209
         ).solve()
         print("SA:")
         print(sa_solution)

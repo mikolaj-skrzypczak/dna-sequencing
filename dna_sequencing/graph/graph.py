@@ -42,7 +42,7 @@ class Graph:
     def get_oligonucleotide_length(self) -> int:
         return self.__oligonucleotide_length
 
-    def get_vertex_by_id(self, _id: int) -> Vertex:
+    def get_vertex_by_ind(self, _id: int) -> Vertex:
         return self.__vertices_list[_id]
 
     def get_vertices_no(self) -> int:
