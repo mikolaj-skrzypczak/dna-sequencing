@@ -19,7 +19,7 @@ class SolutionContainer:
         actual_overlaps = np.asarray(self.__overlaps, dtype=np.intc)
         ideal_overlaps = np.full(
             shape=actual_overlaps.shape,
-            fill_value=self.__oligonucleotide_length,
+            fill_value=self.__oligonucleotide_length - 1,
             dtype=actual_overlaps.dtype
         )
         return np.sum(ideal_overlaps - actual_overlaps)
@@ -59,10 +59,13 @@ class SolutionContainer:
     def get_sequence_length(self) -> int:
         return len(self.__sequence)
 
-    def delete_last(self) -> None:
-        self.__sequence = self.__sequence[:-(self.__oligonucleotide_length - self.__overlaps[-1])]
-        self.__vertices_ids.pop()
-        self.__overlaps.pop()
+    def get_sequence(self) -> str:
+        return self.__sequence
+
+    def get_accuracy(self, n_optimal_used_oligonucleotides: int) -> float:
+        n_used_oligonucleotides = len(self.__vertices_ids)
+        accuracy = n_used_oligonucleotides / n_optimal_used_oligonucleotides
+        return accuracy
 
     def __str__(self) -> str:
         return f"Used oligonucleotides: {len(self.__vertices_ids)}\nGenerated sequence:\n{self.__sequence}"
@@ -72,4 +75,4 @@ class SolutionContainer:
         accuracy = n_used_oligonucleotides / n_optimal_used_oligonucleotides
         sequence_length = len(self.__sequence)
         mean_overlap = np.mean(self.__overlaps)
-        return f"{record_name},{n_used_oligonucleotides},{accuracy},{sequence_length},{mean_overlap},{self.__sequence}"
+        return f"{record_name},{n_used_oligonucleotides},{accuracy},{sequence_length},{mean_overlap}"

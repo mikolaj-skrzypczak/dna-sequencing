@@ -14,15 +14,15 @@ class SimulatedAnnealingSolver:
     __solution: SolutionContainer
     __iterations: int
     __initial_temperature: int
-    __optimal_sequence_length: int
+    __original_sequence_length: int
 
-    def __init__(self, graph: Graph, solution: SolutionContainer,
-                 iterations: int, initial_temperature: int, optimal_sequence_length: int) -> None:
+    def __init__(self, graph: Graph, initial_solution: SolutionContainer,
+                 iterations: int, initial_temperature: int, original_sequence_length: int) -> None:
         self.__graph = graph
-        self.__solution = solution
+        self.__solution = initial_solution
         self.__iterations = iterations
         self.__initial_temperature = initial_temperature
-        self.__optimal_sequence_length = optimal_sequence_length
+        self.__original_sequence_length = original_sequence_length
 
     def solve(self):
         for iteration in range(self.__iterations):
@@ -35,7 +35,7 @@ class SimulatedAnnealingSolver:
                 self.__solution = neighbor_solution
 
         return shrink_solution_to_fit_optimal_sequence_length(
-            self.__graph, self.__solution, self.__optimal_sequence_length)
+            self.__graph, self.__solution, self.__original_sequence_length)
 
     @staticmethod
     def __acceptance_probability(current: np.ndarray, neighbor: np.ndarray, t: float) -> float:

@@ -11,6 +11,7 @@ packages = [
 
 [tool.poetry.scripts]
 dna_sequencing = "dna_sequencing.__main__:main"
+generate_report = "dna_sequencing.csv:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
