@@ -54,7 +54,7 @@ class SolutionContainer:
         return len(self.__vertices_ids)
 
     def get_oligonucleotide_length(self) -> int:
-        return copy.deepcopy(self.__oligonucleotide_length)
+        return self.__oligonucleotide_length
 
     def get_sequence_length(self) -> int:
         return len(self.__sequence)
