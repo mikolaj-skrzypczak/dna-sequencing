@@ -5,7 +5,7 @@ from math import exp, log
 import numpy as np
 
 from dna_sequencing.graph.graph import Graph
-from dna_sequencing.simulated_annealing.optimalization import shrink_solution_to_fit_optimal_sequence_length
+from dna_sequencing.simulated_annealing.optimalization import shrink_solution_to_fit_original_sequence_length
 from dna_sequencing.solution.solution_container import SolutionContainer
 
 
@@ -34,7 +34,7 @@ class SimulatedAnnealingSolver:
             if self.__acceptance_probability(current_evaluation, neighbor_evaluation, _T) >= random.random():
                 self.__solution = neighbor_solution
 
-        return shrink_solution_to_fit_optimal_sequence_length(
+        return shrink_solution_to_fit_original_sequence_length(
             self.__graph, self.__solution, self.__original_sequence_length)
 
     @staticmethod

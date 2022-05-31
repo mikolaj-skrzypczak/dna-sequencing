@@ -55,7 +55,7 @@ def main() -> None:
             all_accuracies = []
 
             filename = test_instance_path.split("/")[-1]
-            optimal_sequence_length, optimal_nucleotides_count = \
+            original_sequence_length, optimal_nucleotides_count = \
                 __get_original_sequence_length_and_original_nucleotides_count(filename)
 
             test_instance = read_file(test_instance_path)
@@ -70,7 +70,7 @@ def main() -> None:
                     initial_solution=greedy_solution,
                     iterations=1000,
                     initial_temperature=50,
-                    original_sequence_length=optimal_sequence_length
+                    original_sequence_length=original_sequence_length
                 ).solve()
                 end = time.time()
                 _time += end - start

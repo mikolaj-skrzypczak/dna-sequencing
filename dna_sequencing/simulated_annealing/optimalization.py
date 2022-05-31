@@ -16,18 +16,18 @@ def __find_starting_index_of_best_subspace(subspace_width: int, overlaps: np.arr
 
 
 def __create_new_solution(old_solution: SolutionContainer, oligonucleotide_length: int,
-                          graph: Graph, starting_index: int, optimal_sequence_length: int) -> SolutionContainer:
+                          graph: Graph, starting_index: int, original_sequence_length: int) -> SolutionContainer:
     new_solution = SolutionContainer(oligonucleotide_length)
     new_solution.init_ids(old_solution.get_vertex_id_by_index(starting_index))
     new_solution.init_sequence(graph.get_vertex_by_ind(starting_index).oligonucleotide)
 
     current = starting_index
-    while new_solution.get_sequence_length() <= optimal_sequence_length:
+    while new_solution.get_sequence_length() <= original_sequence_length:
         left_vertex = graph.get_vertex_by_ind(old_solution.get_vertex_id_by_index(current))
         right_vertex = graph.get_vertex_by_ind(old_solution.get_vertex_id_by_index(current + 1))
         overlap = graph.compute_overlap(left_vertex, right_vertex)
 
-        if (oligonucleotide_length - overlap + new_solution.get_sequence_length()) > optimal_sequence_length:
+        if (oligonucleotide_length - overlap + new_solution.get_sequence_length()) > original_sequence_length:
             break
 
         new_solution.add_vertex_to_solution(
@@ -40,7 +40,7 @@ def __create_new_solution(old_solution: SolutionContainer, oligonucleotide_lengt
     return new_solution
 
 
-def shrink_solution_to_fit_optimal_sequence_length(
+def shrink_solution_to_fit_original_sequence_length(
         graph: Graph, old_solution: SolutionContainer, original_sequence_length: int) -> SolutionContainer:
     oligonucleotide_length = old_solution.get_oligonucleotide_length()
     overlaps = np.asarray(old_solution.get_overlaps(), dtype=np.intc)
